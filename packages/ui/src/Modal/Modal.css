@@ -1,0 +1,23 @@
+.fk-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.fk-modal {
+  background: var(--fk-bg-surface);
+  border: 1px solid var(--fk-border);
+  border-radius: var(--fk-radius-lg);
+  padding: var(--fk-space-6);
+  min-width: 320px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  font-family: var(--fk-font-sans);
+  color: var(--fk-text-primary);
+  outline: none;
+}

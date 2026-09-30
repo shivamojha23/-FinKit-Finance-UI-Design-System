@@ -1,0 +1,4 @@
+.fk-<%= fileName %> {
+  font-family: var(--fk-font-sans);
+  color: var(--fk-text-primary);
+}

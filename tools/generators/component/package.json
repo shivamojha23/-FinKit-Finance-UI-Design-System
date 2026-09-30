@@ -1,0 +1,9 @@
+{
+  "name": "@finkit/tools",
+  "private": true,
+  "version": "0.0.1",
+  "generators": "./generators.json",
+  "dependencies": {
+    "@nx/devkit": "*"
+  }
+}

@@ -1,0 +1,42 @@
+.fk-textfield {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fk-space-1);
+  font-family: var(--fk-font-sans);
+}
+
+.fk-textfield__label {
+  font-size: var(--fk-text-sm);
+  font-weight: 500;
+  color: var(--fk-text-secondary);
+}
+
+.fk-textfield__input {
+  padding: var(--fk-space-2) var(--fk-space-3);
+  font-size: var(--fk-text-base);
+  font-family: inherit;
+  color: var(--fk-text-primary);
+  background: var(--fk-bg-surface);
+  border: 1px solid var(--fk-border);
+  border-radius: var(--fk-radius-md);
+  outline: none;
+  transition: border-color var(--fk-transition-fast);
+}
+
+.fk-textfield__input:focus {
+  border-color: var(--fk-accent);
+}
+
+.fk-textfield--error .fk-textfield__input {
+  border-color: var(--fk-negative);
+}
+
+.fk-textfield__message {
+  margin: 0;
+  font-size: var(--fk-text-xs);
+  color: var(--fk-text-muted);
+}
+
+.fk-textfield--error .fk-textfield__message {
+  color: var(--fk-negative);
+}

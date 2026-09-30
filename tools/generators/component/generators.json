@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "component": {
+      "factory": "./index",
+      "schema": "./schema.json",
+      "description": "Scaffolds a new UI component (tsx, css, spec, story, barrel export)."
+    }
+  }
+}

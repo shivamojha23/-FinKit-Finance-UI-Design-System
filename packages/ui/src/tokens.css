@@ -1,0 +1,51 @@
+:root {
+  /* Backgrounds */
+  --fk-bg-primary: #0f1117;
+  --fk-bg-surface: #1a1d27;
+  --fk-bg-muted: #252833;
+
+  /* Text — all pairs pass WCAG AA (≥4.5:1) on every background */
+  --fk-text-primary: #f0f0f3;   /* 16.59:1 / 14.78:1 / 12.91:1 */
+  --fk-text-secondary: #a0a3b1; /* 7.52:1 / 6.70:1 / 5.85:1 */
+  --fk-text-muted: #8b8fa2;     /* 5.88:1 / 5.24:1 / 4.58:1 */
+
+  /* Semantic indicators — pass ≥4.5:1 on primary & surface bg */
+  --fk-positive: #34d399; /* 9.82:1 / 8.75:1 */
+  --fk-negative: #f87171; /* 6.82:1 / 6.08:1 */
+
+  /* Accent */
+  --fk-accent: #818cf8;      /* 6.33:1 / 5.64:1 */
+  --fk-accent-hover: #6366f1;
+
+  /* Border */
+  --fk-border: #2e3240;
+
+  /* Spacing scale */
+  --fk-space-1: 4px;
+  --fk-space-2: 8px;
+  --fk-space-3: 12px;
+  --fk-space-4: 16px;
+  --fk-space-5: 24px;
+  --fk-space-6: 32px;
+  --fk-space-8: 48px;
+
+  /* Typography */
+  --fk-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --fk-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --fk-text-xs: 0.75rem;
+  --fk-text-sm: 0.875rem;
+  --fk-text-base: 1rem;
+  --fk-text-lg: 1.125rem;
+  --fk-text-xl: 1.25rem;
+  --fk-text-2xl: 1.5rem;
+
+  /* Radii */
+  --fk-radius-sm: 4px;
+  --fk-radius-md: 8px;
+  --fk-radius-lg: 12px;
+  --fk-radius-full: 9999px;
+
+  /* Transitions */
+  --fk-transition-fast: 150ms ease;
+  --fk-transition-base: 200ms ease;
+}

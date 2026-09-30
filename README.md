@@ -1,110 +1,176 @@
-# Finkit
+# FinKit
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A finance-flavored UI design system built as an Nx monorepo. Includes accessible React components, a framework-agnostic Web Component, a Next.js documentation site with GitHub OAuth, and full CI tooling.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Quick Start
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+```bash
+# Install dependencies
+npm install
 
-## Generate a library
+# Run the docs app
+npx nx run docs:dev
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+# Run Storybook
+npx nx run ui:storybook
+
+# Run all checks (lint, typecheck, test, knip)
+npm run verify
 ```
 
-## Run tasks
-
-To build the library use:
-
-```sh
-npx nx build pkg1
-```
-
-To run any task with Nx use:
-
-```sh
-npx nx <target> <project-name>
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
+## Architecture
 
 ```
-npx nx release
+finkit/
+├── packages/
+│   ├── ui/                  # React + TypeScript component library
+│   │   ├── src/
+│   │   │   ├── TextField/   # Input with label, validation, error state
+│   │   │   ├── Modal/       # Focus-trapped dialog (Escape, backdrop close)
+│   │   │   ├── Tabs/        # Roving tabindex, keyboard navigation
+│   │   │   ├── QuoteCard/   # Stock quote with price & change indicator
+│   │   │   ├── WatchlistTable/ # Sortable stock watchlist table
+│   │   │   ├── tokens.css   # Design tokens (CSS custom properties)
+│   │   │   └── index.ts     # Barrel exports
+│   │   └── .storybook/      # Storybook configuration
+│   │
+│   └── web-components/      # Framework-agnostic Custom Elements
+│       └── src/
+│           └── QuoteCard.ts  # <fk-quote-card> — Shadow DOM, zero deps
+│
+├── apps/
+│   └── docs/                # Next.js 16 documentation site
+│       └── src/
+│           ├── app/
+│           │   ├── page.tsx          # Component demos (all 5)
+│           │   ├── protected/page.tsx # Auth-gated dashboard
+│           │   └── api/auth/         # Auth.js API route
+│           └── auth.ts               # Auth.js config (GitHub OAuth)
+│
+├── tools/
+│   └── generators/
+│       └── component/       # Nx generator: scaffolds new components
+│
+├── .github/workflows/ci.yml # CI: lint, typecheck, test, build, Lighthouse
+└── lighthouserc.json        # Lighthouse CI thresholds
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+## Components
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| Component | Package | Description |
+|-----------|---------|-------------|
+| `TextField` | `@finkit/ui` | Accessible input with label, validation message, error state |
+| `Modal` | `@finkit/ui` | Focus-trapped dialog with Escape/backdrop close, focus restore |
+| `Tabs` | `@finkit/ui` | Keyboard-navigable tabs (Arrow, Home, End) with roving tabindex |
+| `QuoteCard` | `@finkit/ui` | Stock quote card with formatted price and ±change indicator |
+| `WatchlistTable` | `@finkit/ui` | Sortable stock table with `aria-sort` column headers |
+| `<fk-quote-card>` | `@finkit/web-components` | Web Component with Shadow DOM, zero runtime dependencies |
 
-## Keep TypeScript project references up to date
+All React components meet **WCAG AA** accessibility standards (verified by axe-core in tests).
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+## Usage
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
+### React (packages/ui)
 
-```sh
-npx nx sync
+```tsx
+import { QuoteCard, WatchlistTable } from '@finkit/ui';
+
+<QuoteCard
+  symbol="AAPL"
+  name="Apple Inc."
+  price={189.84}
+  change={2.31}
+  changePercent={1.23}
+/>
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+### Web Component (packages/web-components)
 
-```sh
-npx nx sync:check
+```html
+<script type="module">
+  import { register } from '@finkit/web-components';
+  register();
+</script>
+
+<fk-quote-card
+  symbol="AAPL"
+  name="Apple Inc."
+  price="189.84"
+  change="2.31"
+  change-percent="1.23"
+></fk-quote-card>
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+## Scaffolding a New Component
 
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+```bash
+npx nx g ./tools/generators/component:component MyComponent
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+This creates:
+- `packages/ui/src/MyComponent/MyComponent.tsx` — component
+- `packages/ui/src/MyComponent/MyComponent.css` — styles with design tokens
+- `packages/ui/src/MyComponent/MyComponent.spec.tsx` — tests + axe check
+- `packages/ui/src/MyComponent/MyComponent.stories.tsx` — Storybook story
+- Updates `packages/ui/src/index.ts` with barrel exports
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Auth Setup (GitHub OAuth)
 
-### Step 2
+The docs app uses [Auth.js](https://authjs.dev) v5 with GitHub OAuth.
 
-Use the following command to configure a CI workflow for your workspace:
+1. Create a GitHub OAuth App at [github.com/settings/developers](https://github.com/settings/developers)
+   - Homepage URL: `http://localhost:3000`
+   - Callback URL: `http://localhost:3000/api/auth/callback/github`
+2. Copy the example env file:
+   ```bash
+   cp apps/docs/.env.local.example apps/docs/.env.local
+   ```
+3. Fill in `GITHUB_ID`, `GITHUB_SECRET`, and `AUTH_SECRET` (generate with `npx auth secret`)
 
-```sh
-npx nx g ci-workflow
-```
+## Scripts
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| Command | Description |
+|---------|-------------|
+| `npm run verify` | Run lint + typecheck + test + knip (exits non-zero on any failure) |
+| `npx nx run docs:dev` | Start docs app dev server |
+| `npx nx run docs:build` | Production build of docs app |
+| `npx nx run ui:storybook` | Start Storybook for component library |
+| `npx nx run ui:test` | Run component tests |
+| `npx nx run-many --targets=build` | Build all packages |
 
-## Install Nx Console
+## CI Pipeline
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+GitHub Actions runs on push to `main`/`master` and on PRs:
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+1. **Lint** — ESLint across all projects
+2. **Type-check** — `tsc --build` for library packages
+3. **Test** — Vitest with axe-core accessibility checks
+4. **Build** — Production builds for all packages
+5. **Knip** — Detect unused files, exports, and dependencies
+6. **Lighthouse CI** — Performance and accessibility audits (on push only)
 
-## Useful links
+## Design Tokens
 
-Learn more:
+All components use CSS custom properties defined in `packages/ui/src/tokens.css`. Key tokens:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| Token | Value | Purpose |
+|-------|-------|---------|
+| `--fk-bg-primary` | `#0f1117` | Page background |
+| `--fk-bg-surface` | `#1a1d27` | Card/surface background |
+| `--fk-text-primary` | `#f0f0f3` | Primary text |
+| `--fk-positive` | `#34d399` | Gains / positive indicators |
+| `--fk-negative` | `#f87171` | Losses / negative indicators |
 
-And join the Nx community:
+All text/background pairs meet **WCAG AA 4.5:1** contrast ratio.
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Tech Stack
+
+- **Nx 23** — Monorepo management, caching, task orchestration
+- **React 19** + **TypeScript** — Component library
+- **Vite** — Library builds and test runner (vitest)
+- **Next.js 16** — Documentation site (App Router)
+- **Auth.js v5** — GitHub OAuth authentication
+- **Storybook** — Component documentation and visual testing
+- **axe-core** — Automated accessibility testing
+- **Knip** — Unused code detection
+- **Lighthouse CI** — Performance audits

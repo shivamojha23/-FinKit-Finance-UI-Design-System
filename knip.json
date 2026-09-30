@@ -1,0 +1,24 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": [
+        "@eslint/js",
+        "ajv",
+        "eslint-config-next",
+        "eslint-plugin-import",
+        "eslint-plugin-jsx-a11y",
+        "eslint-plugin-react",
+        "eslint-plugin-react-hooks",
+        "ts-node",
+        "typescript-eslint"
+      ]
+    },
+    "packages/ui": {},
+    "packages/web-components": {},
+    "apps/docs": {},
+    "tools/generators/component": {
+      "entry": ["index.ts"]
+    }
+  }
+}

@@ -1,0 +1,63 @@
+.fk-quote-card {
+  background: var(--fk-bg-surface);
+  border: 1px solid var(--fk-border);
+  border-radius: var(--fk-radius-lg);
+  padding: var(--fk-space-5);
+  font-family: var(--fk-font-sans);
+  min-width: 240px;
+}
+
+.fk-quote-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fk-space-2);
+  margin-bottom: var(--fk-space-3);
+}
+
+.fk-quote-card__symbol {
+  font-size: var(--fk-text-lg);
+  font-weight: 700;
+  color: var(--fk-text-primary);
+  letter-spacing: 0.04em;
+}
+
+.fk-quote-card__name {
+  font-size: var(--fk-text-sm);
+  color: var(--fk-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fk-quote-card__body {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fk-space-3);
+}
+
+.fk-quote-card__price {
+  font-size: var(--fk-text-2xl);
+  font-weight: 600;
+  color: var(--fk-text-primary);
+  font-family: var(--fk-font-mono);
+}
+
+.fk-quote-card__change {
+  font-size: var(--fk-text-sm);
+  font-weight: 500;
+  font-family: var(--fk-font-mono);
+}
+
+.fk-quote-card__change--positive {
+  color: var(--fk-positive);
+}
+
+.fk-quote-card__change--negative {
+  color: var(--fk-negative);
+}
+
+.fk-quote-card__footer {
+  margin-top: var(--fk-space-4);
+  padding-top: var(--fk-space-3);
+  border-top: 1px solid var(--fk-border);
+}

@@ -1,0 +1,14 @@
+import type { ReactNode } from 'react';
+import './<%= name %>.css';
+
+export interface <%= name %>Props {
+  children?: ReactNode;
+}
+
+export function <%= name %>({ children }: <%= name %>Props) {
+  return (
+    <div className="fk-<%= fileName %>">
+      {children}
+    </div>
+  );
+}
